@@ -12,23 +12,15 @@ import org.apache.http.ssl.SSLContexts;
 
 import javax.net.ssl.SSLContext;
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.security.KeyStore;
 
 public class Client {
 
     public static void main(String[] args) {
         try {
-            KeyStore jks = KeyStore.getInstance("JKS");
-
-            InputStream inputStream = Server.class.getClassLoader().getResource("keystore.jks").openStream();
-            jks.load(inputStream, "changeit".toCharArray());
-            inputStream.close();
-
             SSLContext context = SSLContexts.custom()
-                    .loadTrustMaterial(jks, new TrustSelfSignedStrategy())
+                    .loadTrustMaterial(null, new TrustSelfSignedStrategy())
                     .build();
 
             CloseableHttpClient httpClient = HttpClientBuilder.create()
